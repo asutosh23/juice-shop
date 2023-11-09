@@ -11,9 +11,14 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
-      - name: Betterscan Scan
-        uses: topcodersonline/betterscan@v3
-      - name: Upload the SARIF file
+      - name: Run Report
+        id: report
+        uses: bearer/bearer-action@v2
+        with:
+          format: sarif
+          output: results.sarif
+      - name: Upload SARIF file
+        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: report.sarif
+          sarif_file: results.sarif
